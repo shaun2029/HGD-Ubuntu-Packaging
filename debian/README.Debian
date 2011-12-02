@@ -1,0 +1,59 @@
+hgd for Debian
+--------------
+
+Hackathon Gunther Daemon
+=========================
+
+HGD is a music system suitable for hackathons, internet cafes, LAN
+parties etc. Music is played on one set of speakers and clients queue up
+media from their own machines over the network. Because we use MPlayer to play
+media, you can send anything MPlayer understands, including video.
+
+HGD was inspired by the LPD hack -- a music system used at OpenBSD
+hackathons. We plan to implement similar functionality and extend it.
+
+Current features
+----------------
+
+ * Network listener daemon.
+ * Player daemon (uses mplayer).
+ * Command line client with the ability queue and vote-off tracks.
+ * Works on Linux and OpenBSD.
+
+Adding user accounts:
+
+ % hgd-admin user-add <username>
+
+You will be asked to type a password twice. Do this for all users.
+
+Then you can run the hgd daemons:
+
+ % /usr/sbin/hgd-netd
+ % /usr/sbin/hgd-playd
+
+Check the daemons came up properly:
+
+ % hgd-admin status
+
+If either daemons did not come up, then examine the system's 'daemon'
+log (usually /avr/log/daemon) and look for errors. For debugging, you
+can run the daemons in the foreground -B and turn up debugging with -x
+<level> (0-3).
+
+Then you can queue tracks:
+
+ % hgdc q <some media file>
+
+Each command has a manual page for detailed usage instructions. Also,
+each command has a '-h' option for quick help. 
+
+If you do not want to show the video of media files, 'unset DISPLAY'
+before running hgd-playd.
+
+For information on SSL (TLSv1) crypto, see the manual page for
+hgd-netd(1).
+
+Please note that SSL support in HGD is only partially implemented at
+this time. You may use it for encrypting traffic, but not for server
+identity.
+

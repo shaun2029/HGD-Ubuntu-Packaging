@@ -1,0 +1,22 @@
+Source: hgd
+Section: sound
+Priority: extra
+Maintainer: Shaun Simpson <shauns2029@gmail.com>
+Build-Depends: build-essential, debhelper (>= 8.0.0), mplayer, autotools-dev, libbsd-dev, python2.7-dev, libtagc0-dev, libconfig8-dev, libsqlite3-dev, libssl-dev, libc6-dev
+Standards-Version: 3.9.2
+Homepage: http://hgd.theunixzoo.co.uk/hgd-www/
+
+Package: hgd
+Architecture: any
+Depends: libbsd0, mplayer, python2.7, libtagc0, libconfig8, libsqlite3-0, libssl0.9.8, libc6, python-support (>= 0.90) 
+Description: Hackathon Gunther Daemon is a multi user jukebox.
+ Hackathon Gunther Daemon is a multi user jukebox suitible
+ for hackathons, internet cafes, hackspaces etc.
+ The idea is that there is a central server connected to a set 
+ of speakers.
+ Clients have user accounts on the  server and may queue tracks
+ from their own machines. This differs from the approach of MPD
+ (for example), where there is a single centralised music library.
+ The concept was inspired by the LPD hack used at OpenBSD
+ hackathons.
+

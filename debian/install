@@ -1,0 +1,3 @@
+share/examples/hgd.rc /etc/hgd
+share/examples/hgdc.rc /etc/hgd
+

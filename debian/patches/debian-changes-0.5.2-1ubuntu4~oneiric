@@ -1,0 +1,91 @@
+Description: Upstream changes introduced in version 0.5.2-1ubuntu4~oneiric
+ This patch has been created by dpkg-source during the package build.
+ Here's the last changelog entry, hopefully it gives details on why
+ those changes were made:
+ .
+ hgd (0.5.2-1ubuntu4~oneiric) oneiric; urgency=low
+ .
+   * Patched hgd-netd and hgd-playd
+     Fix issue where PID changes after hgd_daemonise()
+   * Added database initialisation
+ .
+ The person named in the Author field signed this changelog entry.
+Author: Shaun Simpson <shauns2029@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- hgd-0.5.2.orig/hgd-playd.c
++++ hgd-0.5.2/hgd-playd.c
+@@ -329,16 +329,17 @@ main(int argc, char **argv)
+ 		hgd_exit_nicely();
+ 	}
+ #endif
+-	/* Do this before daemonising so we can see the output */
+-	if (hgd_write_pid_file() != HGD_OK) {
+-		DPRINTF(HGD_D_ERROR, "Can't write PID away");
+-		return (HGD_FAIL);
+-	}
+ 
+ 	/* start */
+ 	if (background)
+ 		hgd_daemonise();
+ 
++/* This is a hack for Linux. PID changes after hgd_daemonise()
++	/* Do this before daemonising so we can see the output */
++	if (hgd_write_pid_file() != HGD_OK) {
++		DPRINTF(HGD_D_ERROR, "Can't write PID away");
++		return (HGD_FAIL);
++	}
+ 
+ 	if (hgd_play_loop() == HGD_OK)
+ 		exit_ok = 1;
+--- hgd-0.5.2.orig/Makefile.in
++++ hgd-0.5.2/Makefile.in
+@@ -83,9 +83,9 @@ hgd-playd: common.o db.o py.o hgd-playd.
+ hgd-netd: cfg.o common.o net.o mplayer.o hgd-netd.c hgd.h db.o cfg.o crypto.o user.o
+ 	${CC} ${TAG_CFLAGS} ${CPPFLAGS} ${SQL_CFLAGS} ${CFLAGS} ${PY_CFLAGS} \
+ 		py.o mplayer.o cfg.o common.o db.o net.o crypto.o user.o \
+-		${TAG_LDFLAGS} ${SQL_LDFLAGS} ${SSL_LDFLAGS} ${LDFLAGS} ${BSD_LDFLAGS} \
++		${SQL_LDFLAGS} ${SSL_LDFLAGS} ${LDFLAGS} ${BSD_LDFLAGS} \
+ 		${CONFIG_LDFLAGS} ${PY_LDFLAGS} \
+-		hgd-netd.c -o hgd-netd
++		hgd-netd.c -o hgd-netd ${TAG_LDFLAGS}
+ 
+ hgdc: common.o net.o cfg.o hgdc.c hgd.h config.h
+ 	${CC} ${CPPFLAGS} ${BSD_CFLAGS} ${CONFIG_CFLAGS} ${CFLAGS} \
+--- hgd-0.5.2.orig/hgd-netd.c
++++ hgd-0.5.2/hgd-netd.c
+@@ -1622,16 +1622,18 @@ main(int argc, char **argv)
+ 		hgd_exit_nicely();
+ 	}
+ 
++	/* alright, everything looks good, lets be a daemon and background */
++	if (background)
++		hgd_daemonise();
++
++/* This is a hack for Linux. PID changes after hgd_daemonise()
++
+ 	/* Do this before daemonising so we can see its output if it fails. */
+ 	if (hgd_write_pid_file() != HGD_OK) {
+ 		DPRINTF(HGD_D_ERROR, "Can't write PID away");
+ 		return (HGD_FAIL);
+ 	}
+ 
+-	/* alright, everything looks good, lets be a daemon and background */
+-	if (background)
+-		hgd_daemonise();
+-
+ 
+ 	hgd_listen_loop();
+ 

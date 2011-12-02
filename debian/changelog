@@ -1,0 +1,25 @@
+hgd (0.5.2-1ubuntu5~oneiric) oneiric; urgency=low
+
+  * Patched hgd-netd and hgd-playd
+    Fix issue where PID changes after hgd_daemonise()
+  
+ -- Shaun Simpson <shauns2029@gmail.com>  Fri, 2 Dec 2011 20:56:11 +0000
+
+hgd (0.5.2-1ubuntu4~oneiric) oneiric; urgency=low
+
+  * Added database initialisation
+  
+ -- Shaun Simpson <shauns2029@gmail.com>  Fri, 2 Dec 2011 19:25:00 +0000
+
+hgd (0.5.2-1ubuntu3~oneiric) oneiric; urgency=low
+
+  * Patched Makefile.in to allow building for Oneiric
+
+ -- Shaun Simpson <shauns2029@gmail.com>  Tue, 29 Nov 2011 20:37:45 +0000
+
+hgd (0.5.2-1ubuntu2~oneiric) oneiric; urgency=low
+
+  * Initial release
+
+ -- Shaun Simpson <shauns2029@gmail.com>  Fri, 11 Nov 2011 21:10:45 +0000
+
